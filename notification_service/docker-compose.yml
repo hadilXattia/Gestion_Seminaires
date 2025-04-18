@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification_service/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:Hadil123@db:5432/dbname
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: dbname
+    ports:
+      - "5432:5432"

@@ -1,0 +1,6 @@
+flask
+flask_migrate
+psycopg2-binary
+Flask-SQLAlchemy
+requests
+

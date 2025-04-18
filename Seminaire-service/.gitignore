@@ -1,0 +1,13 @@
+# Ignore venv
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore VSCode files
+.vscode/
+
+# Ignore OS-specific files (macOS)
+.DS_Store

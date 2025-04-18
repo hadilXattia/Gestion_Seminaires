@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  ocr-service:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Indique le Dockerfile pour votre service OCR
+    image: keycloak:latest
+    container_name: keycloak_event
+    ports:
+      - "8000:8000"  # Mappe le port 8000 local au port 8000 du conteneur
+    volumes:
+      - .:/app  # Monte le répertoire local dans le conteneur
+    environment:
+      - ENV=production  # Variables d'environnement
+      - KEYCLOAK_URL=http://keycloak:8080/auth  # URL de Keycloak
+      - KEYCLOAK_REALM=event_microservices  # Nom du Realm Keycloak
+      - KEYCLOAK_CLIENT_ID=confidential-client  # ID du client Keycloak
+      - KEYCLOAK_SECRET=66dmji8QV8j5UFv1gV5W5sqhtjenQyQS  # Secret du client Keycloak
+    depends_on:
+      - keycloak  # Dépend de Keycloak pour l'authentification
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1  # Version officielle de Keycloak
+    container_name: keycloak_container
+    ports:
+      - "8080:8080"  # Mappe le port local 8080 au port du conteneur
+    environment:
+      KEYCLOAK_ADMIN: keycloak_admin  # Nom d'utilisateur de l'administrateur
+      KEYCLOAK_ADMIN_PASSWORD: Lad8dn6P#U3CWd  # Mot de passe de l'administrateur
+    command: start-dev  # Lance Keycloak en mode dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data  # Persistance des données Keycloak
+
+volumes:
+  keycloak_data:  # Volume pour stocker les données Keycloak

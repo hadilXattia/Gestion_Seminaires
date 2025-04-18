@@ -1,0 +1,6 @@
+flask
+python-keycloak
+requests
+gunicorn
+Flask-JWT-Extended 
+python-dotenv
