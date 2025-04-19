@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "helm-seminaire-service.fullname" . }}
+  name: {{ include "helm-Seminaire-service.fullname" . }}
   labels:
-    {{- include "helm-seminaire-service.labels" . | nindent 4 }}
+    {{- include "helm-Seminaire-service.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "helm-seminaire-service.fullname" $ }}
+                name: {{ include "helm-Seminaire-service.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

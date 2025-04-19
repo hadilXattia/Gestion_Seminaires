@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: seminaire-service
+  name: Seminaire-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: seminaire-service
+      app: Seminaire-service
   template:
     metadata:
       labels:
-        app: seminaire-service
+        app: Seminaire-service
     spec:
       containers:
-        - name: seminaire-service
+        - name: Seminaire-service
           image: hadilxattia/seminaire_service:v1
           ports:
             - containerPort: 5000
@@ -25,10 +25,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: seminaire-service
+  name: Seminaire-service
 spec:
   selector:
-    app: seminaire-service
+    app: Seminaire-service
   ports:
     - protocol: TCP
       port: 80
@@ -127,7 +127,7 @@ spec:
             - containerPort: 8000
           env:
             - name: SEMINAIRE_SERVICE_URL
-              value: "http://seminaire-service:5000"
+              value: "http://Seminaire-service:5000"
             - name: AUTH_SERVICE_URL
               value: "http://auth-service:5000"
 

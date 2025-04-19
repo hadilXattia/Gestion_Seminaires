@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-seminaire-service.fullname" . }}
+  name: {{ include "helm-Seminaire-service.fullname" . }}
   labels:
-    {{- include "helm-seminaire-service.labels" . | nindent 4 }}
+    {{- include "helm-Seminaire-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "helm-seminaire-service.selectorLabels" . | nindent 6 }}
+      {{- include "helm-Seminaire-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "helm-seminaire-service.labels" . | nindent 8 }}
+        {{- include "helm-Seminaire-service.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "helm-seminaire-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "helm-Seminaire-service.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
