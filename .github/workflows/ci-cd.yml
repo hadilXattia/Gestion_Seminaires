@@ -14,7 +14,8 @@ jobs:
         service:
           - auth_service
           - reservation-service
-          - Seminaire-service
+          - seminaire-service
+          - notification-service
 
     steps:
     - name: Checkout code
@@ -69,5 +70,5 @@ jobs:
     - name: Deploy Seminaire Service
       run: |
         helm upgrade --install seminaire-service ./helm-seminaire-service \
-          --set image.repository=hadilxattia/Seminaire-service \
+          --set image.repository=hadilxattia/seminaire-service \
           --set image.tag=latest
