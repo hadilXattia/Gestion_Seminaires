@@ -34,7 +34,7 @@ jobs:
       with:
         context: ./${{ matrix.service }}
         push: true
-        tags: HadilXattia/${{ matrix.service }}:latest
+        tags: hadilxattia/${{ matrix.service }}:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,17 +57,17 @@ jobs:
     - name: Deploy Auth Service
       run: |
         helm upgrade --install auth-service ./helm-auth-service \
-          --set image.repository=HadilXattia/auth_service \
+          --set image.repository=hadilxattia/auth_service \
           --set image.tag=latest
 
     - name: Deploy Reservation Service
       run: |
         helm upgrade --install reservation-service ./helm-reservation-service \
-          --set image.repository=HadilXattia/reservation-service \
+          --set image.repository=hadilxattia/reservation-service \
           --set image.tag=latest
 
     - name: Deploy Seminaire Service
       run: |
         helm upgrade --install seminaire-service ./helm-seminaire-service \
-          --set image.repository=HadilXattia/Seminaire-service \
+          --set image.repository=hadilxattia/Seminaire-service \
           --set image.tag=latest
