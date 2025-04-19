@@ -3,15 +3,20 @@ from datetime import datetime, timedelta
 from app.models import db, Reservation
 import requests
 from app.services import trouver_dates_possibles, Confirmation_email, new_date_email, verify_token
+import logging
 
 bp = Blueprint('reservations', __name__)
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 @bp.route("/")
 def home():
+    logger.info("Reservation service root endpoint called")
     return "Bienvenue dans le service de réservation !", 200
 
 @bp.route('/reservation-service/create-reservation', methods=['POST'])
 def creer_reservation():
+    logger.info(f"Demande de réservation reçue - Utilisateur ID: {utilisateur_id}, Séminaire ID: {seminaire_id}")
+
     # Récupérer les données JSON envoyées dans le corps de la requête
     data = request.get_json()
 
@@ -20,7 +25,7 @@ def creer_reservation():
     seminaire_id = data.get('seminaire_id')
     date_debut_str = data.get('date')  # Format ISO8601 attendu
     duree = data.get('duree', 1)  # Par défaut, durée = 1 heure
-
+    logger.warning("Conflit détecté avec une autre réservation.")
     if not utilisateur_id or not seminaire_id or not date_debut_str:
         return {"error": "Paramètres manquants : 'utilisateur_id', 'seminaire_id', 'date' sont obligatoires."}, 400
 
@@ -71,6 +76,8 @@ def creer_reservation():
         message = {
             "message": f"Réservation créée avec succès pour le {date_debut.strftime('%Y-%m-%d %H:%M:%S')}."
         }
+        logger.info(f"Réservation créée avec succès - ID utilisateur: {utilisateur_id}, Séminaire ID: {seminaire_id}, Date: {date_debut}")
+
         Confirmation_email(utilisateur_id, seminaire_id, date_debut)
 
     # Créer et sauvegarder la réservation
@@ -92,6 +99,7 @@ def modifier_reservation(seminaire_id):
     """Mettre à jour une réservation existante."""
     data = request.get_json()
     utilisateur_existe = verify_token(data.get('token'))
+    logger.info(f"Demande de mise à jour de la réservation pour le séminaire ID: {seminaire_id}")
 
     # Vérifier si l'utilisateur est authentifié
     if not utilisateur_existe:
@@ -126,6 +134,8 @@ def modifier_reservation(seminaire_id):
                         "date_fin": conflit.date_fin.strftime('%Y-%m-%d %H:%M:%S'),
                     }
                 }), 409
+            logger.warning("Date de mise à jour en conflit avec une autre réservation.")
+
 
             # Mettre à jour les dates si elles sont disponibles
             reservation.date_debut = nouvelle_date_debut
@@ -140,6 +150,8 @@ def modifier_reservation(seminaire_id):
 
     # Enregistrer les modifications
     db.session.commit()
+    logger.info(f"Réservation mise à jour avec succès pour le séminaire ID: {seminaire_id}")
+
     return jsonify({"message": "Réservation mise à jour avec succès."}), 200
 
 
@@ -147,10 +159,13 @@ def modifier_reservation(seminaire_id):
 def supprimer_reservation(seminaire_id):
     """Supprimer une réservation."""
     reservation = Reservation.query.filter_by(seminaire_id=seminaire_id).first()
+    logger.info(f"Tentative de suppression de la réservation pour le séminaire ID: {seminaire_id}")
 
     if not reservation:
         return jsonify({"message": "Réservation non trouvée."}), 404
 
     db.session.delete(reservation)
     db.session.commit()
+    logger.info(f"Réservation supprimée pour le séminaire ID: {seminaire_id}")
+
     return jsonify({"message": "Réservation supprimée avec succès."})
