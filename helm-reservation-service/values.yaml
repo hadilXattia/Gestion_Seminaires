@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: reservation-service-reservation-service
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+
+resources: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: []
+
+serviceAccount:
+  create: true
+  name: ""
+
+autoscaling:
+  enabled: false

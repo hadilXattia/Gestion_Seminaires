@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-reservation-service.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "helm-reservation-service.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "helm-reservation-service.name" . }}
+    spec:
+      serviceAccountName: {{ include "helm-reservation-service.serviceAccountName" . }}
+      containers:
+        - name: reservation-service
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 8000

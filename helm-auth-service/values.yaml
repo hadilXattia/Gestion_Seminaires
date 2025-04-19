@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: hadilxattia/auth_service  # Change per service
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+env:
+  - name: DATABASE_URL
+    value: "postgresql://postgres:Hadil123@postgres_db:5432/auth_db"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: []
