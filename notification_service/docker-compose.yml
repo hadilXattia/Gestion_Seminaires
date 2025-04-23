@@ -16,7 +16,7 @@ services:
     image: postgres:13
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      POSTGRES_PASSWORD: Hadil123
       POSTGRES_DB: dbname
     ports:
       - "5432:5432"
