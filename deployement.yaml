@@ -132,6 +132,8 @@ spec:
               value: "http://auth-service:5000"
 
 ---
+# This is a Kubernetes service definition for the notification service
+
 apiVersion: v1
 kind: Service
 metadata:
