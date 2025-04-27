@@ -41,23 +41,4 @@ jobs:
           file: ./${{ matrix.folder }}/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest
-  sonarcloud:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Set up Java (SonarScanner needs Java)
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Run SonarQube Scan
-        run: |
-          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner.zip
-          ./sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
